@@ -77,13 +77,15 @@ const SignIn = () => {
 
           <OAuth />
 
-          <Link
-            href="/sign-up"
-            className="mt-10 text-lg text-center text-general-200"
-          >
+          <Text className="mt-12 text-lg text-center font-rubik text-black-200">
             Don't have an account?{" "}
-            <Text className="text-primary-500">Sign Up</Text>
-          </Link>
+            <Link
+              href="/sign-up"
+              className="font-bold text-primary-500"
+            >
+              Sign Up
+            </Link>
+          </Text>
         </View>
       </View>
     </ScrollView>
