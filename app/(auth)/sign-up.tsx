@@ -42,13 +42,15 @@ const SignUp = () => {
             title="Sign Up"
             className="mt-6"
           />
-          <Link
-            href="/sign-in"
-            className="mt-10 text-lg text-center text-general-200"
-          >
+          <Text className="mt-12 text-lg text-center font-rubik text-black-200">
             Already have an account?{" "}
-            <Text className="text-primary-500">Log In</Text>
-          </Link>
+            <Link
+              href="/sign-in"
+              className="font-bold text-primary-500"
+            >
+              Sign In
+            </Link>
+          </Text>
         </View>
       </View>
     </ScrollView>
