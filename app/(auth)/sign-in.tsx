@@ -1,13 +1,44 @@
-import { View, Text, ScrollView, Image } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { icons, images } from '@/constants'
-import InputField from '@/components/InputField'
-import CustomButton from '@/components/CustomButton'
-import { Link } from 'expo-router'
-import OAuth from '@/components/OAuth'
+import { useSignIn } from "@clerk/clerk-expo";
+import { Link, router } from "expo-router";
+import { useCallback, useState } from "react";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
+
+import CustomButton from "@/components/CustomButton";
+import InputField from "@/components/InputField";
+import OAuth from "@/components/OAuth";
+import { icons, images } from "@/constants";
 
 const SignIn = () => {
+  const { signIn, setActive, isLoaded } = useSignIn();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const onSignInPress = useCallback(async () => {
+    if (!isLoaded) return;
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: form.email,
+        password: form.password,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace("/(root)/(tabs)/home");
+      } else {
+        // See https://clerk.com/docs/custom-flows/error-handling for more info on error handling
+        console.log(JSON.stringify(signInAttempt, null, 2));
+        Alert.alert("Error", "Log in failed. Please try again.");
+      }
+    } catch (err: any) {
+      console.log(JSON.stringify(err, null, 2));
+      Alert.alert("Error", err.errors[0].longMessage);
+    }
+  }, [isLoaded, form]);
+
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
@@ -17,42 +48,46 @@ const SignIn = () => {
             Welcome 👋
           </Text>
         </View>
+
         <View className="p-5">
           <InputField
             label="Email"
             placeholder="Enter email"
             icon={icons.email}
             textContentType="emailAddress"
-            value=""
+            value={form.email}
+            onChangeText={(value) => setForm({ ...form, email: value })}
           />
+
           <InputField
             label="Password"
             placeholder="Enter password"
             icon={icons.lock}
             secureTextEntry={true}
             textContentType="password"
-            value=""
+            value={form.password}
+            onChangeText={(value) => setForm({ ...form, password: value })}
           />
+
           <CustomButton
-            title="Sign Up"
+            title="Sign In"
+            onPress={onSignInPress}
             className="mt-6"
           />
 
           <OAuth />
 
-          <Text className="mt-12 text-lg text-center font-rubik text-black-200">
+          <Link
+            href="/sign-up"
+            className="mt-10 text-lg text-center text-general-200"
+          >
             Don't have an account?{" "}
-            <Link
-              href="/sign-up"
-              className="font-bold text-primary-500"
-            >
-              Sign Up
-            </Link>
-          </Text>
+            <Text className="text-primary-500">Sign Up</Text>
+          </Link>
         </View>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
