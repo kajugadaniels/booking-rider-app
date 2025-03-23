@@ -2,6 +2,9 @@ import { View, Text, ScrollView, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons, images } from '@/constants'
+import InputField from '@/components/InputField'
+import CustomButton from '@/components/CustomButton'
+import { Link } from 'expo-router'
 
 const SignUp = () => {
   return (
@@ -14,7 +17,38 @@ const SignUp = () => {
           </Text>
         </View>
         <View className="p-5">
-          
+          <InputField
+            label="Name"
+            placeholder="Enter name"
+            icon={icons.person}
+            value=""
+          />
+          <InputField
+            label="Email"
+            placeholder="Enter email"
+            icon={icons.email}
+            textContentType="emailAddress"
+            value=""
+          />
+          <InputField
+            label="Password"
+            placeholder="Enter password"
+            icon={icons.lock}
+            secureTextEntry={true}
+            textContentType="password"
+            value=""
+          />
+          <CustomButton
+            title="Sign Up"
+            className="mt-6"
+          />
+          <Link
+            href="/sign-in"
+            className="mt-10 text-lg text-center text-general-200"
+          >
+            Already have an account?{" "}
+            <Text className="text-primary-500">Log In</Text>
+          </Link>
         </View>
       </View>
     </ScrollView>
