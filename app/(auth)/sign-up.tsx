@@ -5,6 +5,7 @@ import { icons, images } from '@/constants'
 import InputField from '@/components/InputField'
 import CustomButton from '@/components/CustomButton'
 import { Link } from 'expo-router'
+import OAuth from '@/components/OAuth'
 
 const SignUp = () => {
   return (
@@ -42,6 +43,9 @@ const SignUp = () => {
             title="Sign Up"
             className="mt-6"
           />
+
+          <OAuth />
+
           <Text className="mt-12 text-lg text-center font-rubik text-black-200">
             Already have an account?{" "}
             <Link
