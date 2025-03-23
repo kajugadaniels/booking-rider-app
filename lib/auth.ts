@@ -1,7 +1,6 @@
 import * as Linking from "expo-linking";
 import * as SecureStore from "expo-secure-store";
-
-import { fetchAPI } from "@/lib/fetch";
+import { fetchAPI } from "./fetch";
 
 export const tokenCache = {
   async getToken(key: string) {
